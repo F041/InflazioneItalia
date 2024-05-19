@@ -11,6 +11,10 @@ library(caret)
 library(vetiver)
 library(pins)
 
+Sys.setenv(PINS_CACHE_DIR = base::tempdir())
+board <- board_folder("~/Downloads/")
+board_cache_path(board)
+
 link<-"https://docs.google.com/spreadsheets/d/1iUGFBhbx8Zrj-bvrn0kRrwnCCWzpF7Ya_OcHnR6jkXQ/edit#gid=440387417"
 data= read_sheet(link,skip =0, sheet=1) #attenzione a numero colonne su righe
 hist(data$InflazioneNIC)
@@ -26,6 +30,7 @@ pacf(data[1:75,c(2:10)])
 #data[1:15,c(2,7:10)]<-scale(data[1:15,c(2,7:10)])
 
 #creating indices
+data<-data[1:75,]
 trainIndex <- createDataPartition(data$InflazioneNIC,p=0.75,list=FALSE)
 train <- data[trainIndex,] #training data (75% of data)
 test <- data[-trainIndex,] #testing data (25% of data)
